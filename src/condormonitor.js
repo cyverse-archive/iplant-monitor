@@ -108,7 +108,9 @@ var create_service = function () {
                     //Clean it up.
                     if (osm_analysis.held) {
                         console.log("Cleaning up held dag.");
+                        console.log("Before transferring files...");
                         cleanup.cleanup_held_dag(osm_analysis);
+                        cleanup.transfer_files(osm_analysis, config.nfs_dir, config.icommands_path, config.filetool_path);
                     }
 
                     //Look at the new status of the analysis and decide whether to clean up the NFS directory.
@@ -120,8 +122,6 @@ var create_service = function () {
                         console.log("Analysis " + osm_analysis.uuid + " is in state " + analysis_status + ", cleaning up.");
 
                         cleanup.cleanup_directories(osm_analysis, config.local_dir_base, config.nfs_dir);
-                        //console.log("Before transferring files...");
-                        //cleanup.transfer_files(osm_analysis, config.nfs_dir, config.icommands_path, config.filetool_path);
                     }
                 } else {
                     console.log("Analysis " + osm_analysis.uuid + " was in a finished state, so there's nothing to do.");

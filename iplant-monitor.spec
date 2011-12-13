@@ -1,7 +1,7 @@
 Summary: iPlant Monitor
 Name: iplant-monitor
 Version: 0.2.0
-Release: 6
+Release: 7
 Epoch: 0
 Group: Applications
 BuildRoot: %{_tmppath}/%{name}-%{version}-buildroot

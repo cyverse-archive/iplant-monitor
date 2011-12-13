@@ -23,7 +23,7 @@ var transfer_files = function (analysis, nfs_dir, iput_path, imkdir_path) {
     
     path.exists(nfs_dir, function (nfs_dir_exists) {
         if (nfs_dir_exists) {
-            var imkdir = spawn(imkdir_path, ["-p", remote_dir]);
+            var imkdir = spawn("/usr/local/bin/handle_error.sh", [nfs_dir, remote_dir, "1"]);
 
             imkdir.stdout.on('data', function (chunk) {
                 console.log(chunk.toString());
@@ -34,24 +34,7 @@ var transfer_files = function (analysis, nfs_dir, iput_path, imkdir_path) {
             });
 
             imkdir.on('exit', function (code) {
-                console.log("imkdir -p " + remote_dir + " exited with code " + code);
-
-                if (code === 0 ) {
-                    var irsync_path = path.join(path.dirname(iput_path), "irsync");
-                    var irsync = spawn(irsync_path, ['-rv', nfs_dir, "i:" + remote_dir]);
-                    
-                    irsync.stdout.on('data', function (chunk) {
-                        console.log(chunk.toString());
-                    });
-                    
-                    irsync.stderr.on('data', function (chunk) {
-                        console.log(chunk.toString());
-                    });
-                    
-                    irsync.on('exit', function (code) {
-                        console.log("irsync -rv " + nfs_dir + " i:" + remote_dir);
-                    });
-                }
+                console.log("filetool exited with code: " + code);
             });
         } else {
             console.log("DIRECTORY " + nfs_dir + "DOES NOT EXIST.");
